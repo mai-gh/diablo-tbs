@@ -2998,8 +2998,9 @@ void StartWarpLvl(Player &player, size_t pidx)
 	}
 }
 
-void ProcessPlayers()
+bool ProcessPlayers()
 {
+	bool action = false;
 	assert(MyPlayer != nullptr);
 	Player &myPlayer = *MyPlayer;
 
@@ -3063,21 +3064,27 @@ void ProcessPlayers()
 				case PM_WALK_SOUTHWARDS:
 				case PM_WALK_SIDEWAYS:
 					tplayer = DoWalk(player, player._pmode);
+					action = true;
 					break;
 				case PM_ATTACK:
 					tplayer = DoAttack(player);
+					action = true;
 					break;
 				case PM_RATTACK:
 					tplayer = DoRangeAttack(player);
+					action = true;
 					break;
 				case PM_BLOCK:
 					tplayer = DoBlock(player);
+					action = true;
 					break;
 				case PM_SPELL:
 					tplayer = DoSpell(player);
+					action = true;
 					break;
 				case PM_GOTHIT:
 					tplayer = DoGotHit(player);
+					action = true;
 					break;
 				case PM_DEATH:
 					tplayer = DoDeath(player);
@@ -3091,6 +3098,7 @@ void ProcessPlayers()
 				player.AnimInfo.processAnimation();
 		}
 	}
+	return action;
 }
 
 void ClrPlrPath(Player &player)

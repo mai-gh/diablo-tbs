@@ -1375,20 +1375,22 @@ void GameLogic()
 	}
 	if (gbProcessPlayers) {
 		gGameLogicStep = GameLogicStep::ProcessPlayers;
-		ProcessPlayers();
+		if (ProcessPlayers()) {
+			if (leveltype != DTYPE_TOWN) {
+				gGameLogicStep = GameLogicStep::ProcessMonsters;
+				ProcessMonsters();
+				gGameLogicStep = GameLogicStep::ProcessObjects;
+				ProcessObjects();
+				gGameLogicStep = GameLogicStep::ProcessMissiles;
+				ProcessMissiles();
+				gGameLogicStep = GameLogicStep::ProcessItems;
+				ProcessItems();
+				ProcessLightList();
+				ProcessVisionList();
+			}
+		}
 	}
-	if (leveltype != DTYPE_TOWN) {
-		gGameLogicStep = GameLogicStep::ProcessMonsters;
-		ProcessMonsters();
-		gGameLogicStep = GameLogicStep::ProcessObjects;
-		ProcessObjects();
-		gGameLogicStep = GameLogicStep::ProcessMissiles;
-		ProcessMissiles();
-		gGameLogicStep = GameLogicStep::ProcessItems;
-		ProcessItems();
-		ProcessLightList();
-		ProcessVisionList();
-	} else {
+	if (leveltype == DTYPE_TOWN) {
 		gGameLogicStep = GameLogicStep::ProcessTowners;
 		ProcessTowners();
 		gGameLogicStep = GameLogicStep::ProcessItemsTown;
@@ -1397,19 +1399,12 @@ void GameLogic()
 		ProcessMissiles();
 	}
 	gGameLogicStep = GameLogicStep::None;
-
-#ifdef _DEBUG
-	if (DebugScrollViewEnabled && (SDL_GetModState() & KMOD_SHIFT) != 0) {
-		ScrollView();
-	}
-#endif
-
+	ScrollView();
 	sound_update();
 	CheckTriggers();
 	CheckQuests();
 	RedrawViewport();
 	pfile_update(false);
-
 	plrctrls_after_game_logic();
 }
 
