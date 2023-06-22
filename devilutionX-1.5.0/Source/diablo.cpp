@@ -1375,19 +1375,20 @@ void GameLogic()
 	}
 	if (gbProcessPlayers) {
 		gGameLogicStep = GameLogicStep::ProcessPlayers;
-		if (ProcessPlayers()) {
-			if (leveltype != DTYPE_TOWN) {
+		bool playerDidAction = ProcessPlayers();
+		if (leveltype != DTYPE_TOWN) {
+			if (playerDidAction) {
 				gGameLogicStep = GameLogicStep::ProcessMonsters;
 				ProcessMonsters();
-				gGameLogicStep = GameLogicStep::ProcessObjects;
-				ProcessObjects();
-				gGameLogicStep = GameLogicStep::ProcessMissiles;
-				ProcessMissiles();
-				gGameLogicStep = GameLogicStep::ProcessItems;
-				ProcessItems();
-				ProcessLightList();
-				ProcessVisionList();
 			}
+			gGameLogicStep = GameLogicStep::ProcessMissiles;
+			ProcessMissiles();
+			gGameLogicStep = GameLogicStep::ProcessObjects;
+			ProcessObjects();
+			gGameLogicStep = GameLogicStep::ProcessItems;
+			ProcessItems();
+			ProcessLightList();
+			ProcessVisionList();
 		}
 	}
 	if (leveltype == DTYPE_TOWN) {
