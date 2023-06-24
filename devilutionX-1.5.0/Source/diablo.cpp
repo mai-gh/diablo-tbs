@@ -742,6 +742,7 @@ void GameEventHandler(const SDL_Event &event, uint16_t modState)
 		if (ControlMode == ControlTypes::KeyboardAndMouse && invflag)
 			InvalidateInventorySlot();
 		MousePosition = { event.motion.x, event.motion.y };
+		SetPointAndClick(true);
 		gmenu_on_mouse_move();
 		return;
 	case SDL_MOUSEBUTTONDOWN:
@@ -1836,6 +1837,7 @@ void InitKeymapActions()
 	    N_("Moves the player character left."),
 	    'H',
 	    [] {
+		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_LEFT, AxisDirectionY_NONE }); // left
 	    });
 
@@ -1845,6 +1847,7 @@ void InitKeymapActions()
 	    N_("Moves the player character right."),
 	    'L',
 	    [] {
+		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_NONE }); // right
 	    });
 
@@ -1854,6 +1857,7 @@ void InitKeymapActions()
 	    N_("Moves the player character up."),
 	    'K',
 	    [] {
+		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_NONE, AxisDirectionY_UP }); // up
 	    });
 
@@ -1863,6 +1867,7 @@ void InitKeymapActions()
 	    N_("Moves the player character down."),
 	    'J',
 	    [] {
+		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_NONE, AxisDirectionY_DOWN }); // down
 	    });
 
@@ -1872,6 +1877,7 @@ void InitKeymapActions()
 	    N_("Moves the player character up + left."),
 	    'Y',
 	    [] {
+		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_LEFT, AxisDirectionY_UP }); // up-left
 	    });
 
@@ -1881,6 +1887,7 @@ void InitKeymapActions()
 	    N_("Moves the player character up + right."),
 	    'U',
 	    [] {
+		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_UP }); // up-right
 	    });
 
@@ -1890,6 +1897,7 @@ void InitKeymapActions()
 	    N_("Moves the player character down + left."),
 	    'B',
 	    [] {
+		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_LEFT, AxisDirectionY_DOWN }); // down-left
 	    });
 
@@ -1899,6 +1907,7 @@ void InitKeymapActions()
 	    N_("Moves the player character down + right."),
 	    'N',
 	    [] {
+		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_DOWN }); // down-right
 	    });
 
