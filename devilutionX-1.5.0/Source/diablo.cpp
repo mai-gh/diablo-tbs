@@ -739,17 +739,21 @@ void GameEventHandler(const SDL_Event &event, uint16_t modState)
 		return;
 #endif
 	case SDL_MOUSEMOTION:
+		SetPointAndClick(true);
 		if (ControlMode == ControlTypes::KeyboardAndMouse && invflag)
 			InvalidateInventorySlot();
 		MousePosition = { event.motion.x, event.motion.y };
-		SetPointAndClick(true);
 		gmenu_on_mouse_move();
 		return;
 	case SDL_MOUSEBUTTONDOWN:
+		SetPointAndClick(true);
+		gmenu_on_mouse_move();
 		MousePosition = { event.button.x, event.button.y };
 		HandleMouseButtonDown(event.button.button, modState);
 		return;
 	case SDL_MOUSEBUTTONUP:
+		SetPointAndClick(true);
+		gmenu_on_mouse_move();
 		MousePosition = { event.button.x, event.button.y };
 		HandleMouseButtonUp(event.button.button, modState);
 		return;
