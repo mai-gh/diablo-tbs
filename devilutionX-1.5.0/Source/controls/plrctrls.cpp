@@ -74,7 +74,7 @@ bool InGameMenu()
 	    || (MyPlayer != nullptr && MyPlayer->_pInvincible && MyPlayer->_pHitPoints == 0);
 }
 
-namespace {
+//namespace {
 
 int Slot = SLOTXY_INV_FIRST;
 Point ActiveStashSlot = InvalidStashPoint;
@@ -1541,7 +1541,7 @@ void LogGamepadChange(GamepadLayout newGamepad)
 }
 #endif
 
-} // namespace
+//} // namespace
 
 void DetectInputMethod(const SDL_Event &event, const ControllerButtonEvent &gamepadEvent)
 {

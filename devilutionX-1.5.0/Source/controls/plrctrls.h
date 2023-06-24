@@ -84,4 +84,6 @@ void QuickCast(size_t slot);
 
 extern int speedspellcount;
 
+
+void WalkInDir(size_t playerId, AxisDirection dir);
 } // namespace devilution

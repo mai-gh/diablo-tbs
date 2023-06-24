@@ -1720,7 +1720,8 @@ void InitKeymapActions()
 	    "SpellBook",
 	    N_("Spellbook"),
 	    N_("Open Spellbook."),
-	    'B',
+//	    'B',
+            SDLK_UNKNOWN,
 	    SpellBookKeyPressed,
 	    nullptr,
 	    CanPlayerTakeAction);
@@ -1822,10 +1823,87 @@ void InitKeymapActions()
 	    "ChatLog",
 	    N_("Chat Log"),
 	    N_("Displays chat log."),
-	    'L',
+//	    'L',
+            SDLK_UNKNOWN,
 	    [] {
 		    ToggleChatLog();
 	    });
+
+
+	sgOptions.Keymapper.AddAction(
+	    "MoveLeft",
+	    N_("Move left"),
+	    N_("Moves the player character left."),
+	    'H',
+	    [] {
+		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_LEFT, AxisDirectionY_NONE }); // left
+	    });
+
+	sgOptions.Keymapper.AddAction(
+	    "MoveRight",
+	    N_("Move right"),
+	    N_("Moves the player character right."),
+	    'L',
+	    [] {
+		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_NONE }); // right
+	    });
+
+	sgOptions.Keymapper.AddAction(
+	    "MoveUp",
+	    N_("Move up"),
+	    N_("Moves the player character up."),
+	    'K',
+	    [] {
+		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_NONE, AxisDirectionY_UP }); // up
+	    });
+
+	sgOptions.Keymapper.AddAction(
+	    "MoveDown",
+	    N_("Move down"),
+	    N_("Moves the player character down."),
+	    'J',
+	    [] {
+		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_NONE, AxisDirectionY_DOWN }); // down
+	    });
+
+	sgOptions.Keymapper.AddAction(
+	    "MoveUpLeft",
+	    N_("Move up + left"),
+	    N_("Moves the player character up + left."),
+	    'Y',
+	    [] {
+		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_LEFT, AxisDirectionY_UP }); // up-left
+	    });
+
+	sgOptions.Keymapper.AddAction(
+	    "MoveUpRightt",
+	    N_("Move up + right"),
+	    N_("Moves the player character up + right."),
+	    'U',
+	    [] {
+		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_UP }); // up-right
+	    });
+
+	sgOptions.Keymapper.AddAction(
+	    "MoveDownLeft",
+	    N_("Move down + left"),
+	    N_("Moves the player character down + left."),
+	    'B',
+	    [] {
+		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_LEFT, AxisDirectionY_DOWN }); // down-left
+	    });
+
+	sgOptions.Keymapper.AddAction(
+	    "MoveDownRight",
+	    N_("Move down + right"),
+	    N_("Moves the player character down + right."),
+	    'N',
+	    [] {
+		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_DOWN }); // down-right
+	    });
+
+
+
 #ifdef _DEBUG
 	sgOptions.Keymapper.AddAction(
 	    "DebugToggle",

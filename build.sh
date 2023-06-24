@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd "$(realpath $0 | awk -F\/ 'BEGIN {OFS="/"} {NF-=1} 1')"
 test -d ./build || mkdir build
 
 cfg_args=(
@@ -9,11 +10,11 @@ cfg_args=(
 #  -DNONET=on
 #  -DUNPACKED_SAVES=on
   -DDEBUG=on
-  -DHAS_KBCTRL=1
-  -DKBCTRL_BUTTON_DPAD_LEFT=SDLK_h
-  -DKBCTRL_BUTTON_DPAD_RIGHT=SDLK_l
-  -DKBCTRL_BUTTON_DPAD_UP=SDLK_k
-  -DKBCTRL_BUTTON_DPAD_DOWN=SDLK_j
+#  -DHAS_KBCTRL=1
+#  -DKBCTRL_BUTTON_DPAD_LEFT=SDLK_h
+#  -DKBCTRL_BUTTON_DPAD_RIGHT=SDLK_l
+#  -DKBCTRL_BUTTON_DPAD_UP=SDLK_k
+#  -DKBCTRL_BUTTON_DPAD_DOWN=SDLK_j
 )
 
 build_args=(
@@ -23,4 +24,4 @@ build_args=(
 
 cmake "${cfg_args[@]}" &&
 time ccache cmake "${build_args[@]}" &&
-./build/devilutionx
+./build/devilutionx --verbose
