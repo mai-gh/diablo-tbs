@@ -1778,7 +1778,7 @@ void InitKeymapActions()
 	    "DecreaseGamma",
 	    N_("Decrease Gamma"),
 	    N_("Reduce screen brightness."),
-	    'G',
+	    SDLK_UNKNOWN,
 	    DecreaseGamma,
 	    nullptr,
 	    CanPlayerTakeAction);
@@ -1786,7 +1786,7 @@ void InitKeymapActions()
 	    "IncreaseGamma",
 	    N_("Increase Gamma"),
 	    N_("Increase screen brightness."),
-	    'F',
+	    SDLK_UNKNOWN,
 	    IncreaseGamma,
 	    nullptr,
 	    CanPlayerTakeAction);
@@ -1876,7 +1876,7 @@ void InitKeymapActions()
 	    });
 
 	sgOptions.Keymapper.AddAction(
-	    "MoveUpRightt",
+	    "MoveUpRight",
 	    N_("Move up + right"),
 	    N_("Moves the player character up + right."),
 	    'U',
@@ -1902,6 +1902,36 @@ void InitKeymapActions()
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_DOWN }); // down-right
 	    });
 
+	sgOptions.Keymapper.AddAction(
+	    "PrimaryAction",
+	    N_("Primary action"),
+	    N_("Attack monsters, talk to towners, lift and place inventory items."),
+	    SDLK_SPACE,
+	    [] {
+		    ControllerActionHeld = GameActionType_PRIMARY_ACTION;
+		    LastMouseButtonAction = MouseActionType::None;
+		    PerformPrimaryAction();
+	    },
+	    [] {
+		    ControllerActionHeld = GameActionType_NONE;
+		    LastMouseButtonAction = MouseActionType::None;
+	    },
+	    CanPlayerTakeAction);
+	sgOptions.Keymapper.AddAction(
+	    "SecondaryAction",
+	    N_("Secondary action"),
+	    N_("Open chests, interact with doors, pick up items."),
+	    'G',
+	    [] {
+		    ControllerActionHeld = GameActionType_SECONDARY_ACTION;
+		    LastMouseButtonAction = MouseActionType::None;
+		    PerformSecondaryAction();
+	    },
+	    [] {
+		    ControllerActionHeld = GameActionType_NONE;
+		    LastMouseButtonAction = MouseActionType::None;
+	    },
+	    CanPlayerTakeAction);
 
 
 #ifdef _DEBUG

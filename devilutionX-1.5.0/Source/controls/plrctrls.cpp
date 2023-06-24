@@ -1749,9 +1749,9 @@ bool IsMovementHandlerActive()
 void plrctrls_after_check_curs_move()
 {
 	// check for monsters first, then items, then towners.
-	if (ControlMode == ControlTypes::KeyboardAndMouse || IsPointAndClick()) {
-		return;
-	}
+//	if (ControlMode == ControlTypes::KeyboardAndMouse || IsPointAndClick()) {
+//		return;
+//	}
 
 	// While holding the button down we should retain target (but potentially lose it if it dies, goes out of view, etc)
 	if (ControllerActionHeld != GameActionType_NONE && IsNoneOf(LastMouseButtonAction, MouseActionType::None, MouseActionType::Attack, MouseActionType::Spell)) {
