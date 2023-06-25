@@ -12,20 +12,20 @@ cd diablo-tbs
 ```
 
 ### Options to set
-Settings -> Start Up -> Splash: None
-Settings -> Graphics -> Resolution: < Highest Resolution >
-Settings -> Graphics -> Show Health Values: On
-Settings -> Graphics -> Show Mana Values: On
-Settings -> Gameplay -> Full Quests in Multiplayer: On
-Settings -> Gameplay -> Randomize Quests: Off
-Settings -> Gameplay -> Run in Town: On
-Settings -> Gameplay -> Experience Bar: On
-Settings -> Gameplay -> Enemy Health Bar: On
-Settings -> Gameplay -> Show Monster Type: On
-Settings -> Gameplay -> Show Item Labels: On
-Settings -> Gameplay -> Enable Floating Numbers: Random Angles
-Settings -> Gameplay -> Disable Crippling Shrines: On
-Settings -> Gameplay -> Adria Refills Manna: On
+ - Settings -> Start Up -> Splash: None
+ - Settings -> Graphics -> Resolution: < Highest Resolution >
+ - Settings -> Graphics -> Show Health Values: On
+ - Settings -> Graphics -> Show Mana Values: On
+ - Settings -> Gameplay -> Full Quests in Multiplayer: On
+ - Settings -> Gameplay -> Randomize Quests: Off
+ - Settings -> Gameplay -> Run in Town: On
+ - Settings -> Gameplay -> Experience Bar: On
+ - Settings -> Gameplay -> Enemy Health Bar: On
+ - Settings -> Gameplay -> Show Monster Type: On
+ - Settings -> Gameplay -> Show Item Labels: On
+ - Settings -> Gameplay -> Enable Floating Numbers: Random Angles
+ - Settings -> Gameplay -> Disable Crippling Shrines: On
+ - Settings -> Gameplay -> Adria Refills Manna: On
 
 ### Starting a Game
 
