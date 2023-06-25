@@ -45,7 +45,7 @@ bool DebugVision = false;
 bool DebugPath = false;
 bool DebugGrid = false;
 std::unordered_map<int, Point> DebugCoordsMap;
-bool DebugScrollViewEnabled = false;
+bool DebugScrollViewEnabled = true;
 std::string debugTRN;
 
 // Used for debugging level generation

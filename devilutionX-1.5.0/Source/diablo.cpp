@@ -686,15 +686,21 @@ bool HandleTextInput(string_view text)
 	LogVerbose("Unhandled SDL event: {} {}", name, value);
 }
 
-bool alwaysUseMouse = true;
-bool useMouse = true;
-void ToggleAlwaysUseMouse() {
-	if (alwaysUseMouse) {
-		alwaysUseMouse = false;
-		useMouse = false;
-		SetPointAndClick(false);
+bool alwaysUseMouse = *sgOptions.Gameplay.alwaysUseMouse;
+bool useMouse = *sgOptions.Gameplay.alwaysUseMouse;
+
+void HandleMouseToggle() {
+	if ((SDL_GetModState() & KMOD_SHIFT) != 0) { // shift is pressed
+		if (alwaysUseMouse) {
+			alwaysUseMouse = false;
+			useMouse = false;
+			SetPointAndClick(false);
+		} else {
+			alwaysUseMouse = true;
+			useMouse = true;
+			SetPointAndClick(true);
+		}
 	} else {
-		alwaysUseMouse = true;
 		useMouse = true;
 		SetPointAndClick(true);
 	}
@@ -1419,7 +1425,13 @@ void GameLogic()
 		ProcessMissiles();
 	}
 	gGameLogicStep = GameLogicStep::None;
-	ScrollView();
+
+#ifdef _DEBUG
+	if (DebugScrollViewEnabled && (SDL_GetModState() & KMOD_SHIFT) != 0) {
+		ScrollView();
+	}
+#endif
+
 	sound_update();
 	CheckTriggers();
 	CheckQuests();
@@ -1992,17 +2004,7 @@ void InitKeymapActions()
 	    N_("Use the mouse to select targets"),
 	    'A',
 	    [] {
-		    useMouse = true;
-		    SetPointAndClick(true);
-	    });
-
-	sgOptions.Keymapper.AddAction(
-	    "ToggleAlwaysUseMouse",
-	    N_("Toggle always use mouse"),
-	    N_("Toggle always use the mouse to select targets"),
-	    'W',
-	    [] {
-		ToggleAlwaysUseMouse();
+		HandleMouseToggle();
 	    });
 
 #ifdef _DEBUG

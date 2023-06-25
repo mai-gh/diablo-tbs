@@ -1080,6 +1080,7 @@ GameplayOptions::GameplayOptions()
     , numFullManaPotionPickup("Full Mana Potion Pickup", OptionEntryFlags::None, N_("Full Mana Potion Pickup"), N_("Number of Full Mana potions to pick up automatically."), 0, { 0, 1, 2, 4, 8, 16 })
     , numRejuPotionPickup("Rejuvenation Potion Pickup", OptionEntryFlags::None, N_("Rejuvenation Potion Pickup"), N_("Number of Rejuvenation potions to pick up automatically."), 0, { 0, 1, 2, 4, 8, 16 })
     , numFullRejuPotionPickup("Full Rejuvenation Potion Pickup", OptionEntryFlags::None, N_("Full Rejuvenation Potion Pickup"), N_("Number of Full Rejuvenation potions to pick up automatically."), 0, { 0, 1, 2, 4, 8, 16 })
+    , alwaysUseMouse("Always Use Mouse", OptionEntryFlags::None, N_("Always Use Mouse"), N_("Always allow mouse to change target selection"), true)
     , enableFloatingNumbers("Enable floating numbers", OptionEntryFlags::None, N_("Enable floating numbers"), N_("Enables floating numbers on gaining XP / dealing damage etc."), FloatingNumbers::Off,
           {
               { FloatingNumbers::Off, N_("Off") },
@@ -1128,6 +1129,7 @@ std::vector<OptionEntryBase *> GameplayOptions::GetEntries()
 		&disableCripplingShrines,
 		&adriaRefillsMana,
 		&grabInput,
+		&alwaysUseMouse,
 	};
 }
 

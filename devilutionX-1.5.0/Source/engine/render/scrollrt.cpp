@@ -1538,7 +1538,7 @@ void ScrollView()
 	if (!MyPlayer->HoldItem.isEmpty())
 		return;
 
-	if (MousePosition.x < 20) {
+	if (MousePosition.x < 2) {
 		if (dmaxPosition.y - 1 <= ViewPosition.y || dminPosition.x >= ViewPosition.x) {
 			if (dmaxPosition.y - 1 > ViewPosition.y) {
 				ViewPosition.y++;
@@ -1551,7 +1551,7 @@ void ScrollView()
 			ViewPosition.x--;
 		}
 	}
-	if (MousePosition.x > gnScreenWidth - 20) {
+	if (MousePosition.x > gnScreenWidth - 2) {
 		if (dmaxPosition.x - 1 <= ViewPosition.x || dminPosition.y >= ViewPosition.y) {
 			if (dmaxPosition.x - 1 > ViewPosition.x) {
 				ViewPosition.x++;
@@ -1564,7 +1564,7 @@ void ScrollView()
 			ViewPosition.x++;
 		}
 	}
-	if (MousePosition.y < 20) {
+	if (MousePosition.y < 2) {
 		if (dminPosition.y >= ViewPosition.y || dminPosition.x >= ViewPosition.x) {
 			if (dminPosition.y < ViewPosition.y) {
 				ViewPosition.y--;
@@ -1577,7 +1577,7 @@ void ScrollView()
 			ViewPosition.y--;
 		}
 	}
-	if (MousePosition.y > gnScreenHeight - 20) {
+	if (MousePosition.y > gnScreenHeight - 2) {
 		if (dmaxPosition.y - 1 <= ViewPosition.y || dmaxPosition.x - 1 <= ViewPosition.x) {
 			if (dmaxPosition.y - 1 > ViewPosition.y) {
 				ViewPosition.y++;

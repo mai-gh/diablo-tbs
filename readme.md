@@ -16,6 +16,7 @@ cd diablo-tbs
  - Settings -> Graphics -> Resolution: < Highest Resolution >
  - Settings -> Graphics -> Show Health Values: On
  - Settings -> Graphics -> Show Mana Values: On
+ - Settings -> Graphics -> Show Item Graphics in Stores: On
  - Settings -> Gameplay -> Full Quests in Multiplayer: On
  - Settings -> Gameplay -> Randomize Quests: Off
  - Settings -> Gameplay -> Run in Town: On
@@ -53,4 +54,6 @@ New controls:
  - n: move down-right
  - space: perform primary action
  - g: perform secondary action
- - p: cast selected spell 
+ - p: cast selected spell
+ - a: temporarily allow mouse selection
+ - shift + a: permanently allow mouse selection
