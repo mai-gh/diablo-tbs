@@ -1777,7 +1777,7 @@ void InitKeymapActions()
 	    "Pause Game",
 	    N_("Pause Game"),
 	    N_("Pauses the game."),
-	    'P',
+	    SDLK_UNKNOWN,
 	    diablo_pause_game);
 	sgOptions.Keymapper.AddAction(
 	    "DecreaseGamma",
@@ -1939,6 +1939,21 @@ void InitKeymapActions()
 		    ControllerActionHeld = GameActionType_SECONDARY_ACTION;
 		    LastMouseButtonAction = MouseActionType::None;
 		    PerformSecondaryAction();
+	    },
+	    [] {
+		    ControllerActionHeld = GameActionType_NONE;
+		    LastMouseButtonAction = MouseActionType::None;
+	    },
+	    CanPlayerTakeAction);
+	sgOptions.Keymapper.AddAction(
+	    "SpellAction",
+	    N_("Spell action"),
+	    N_("Cast the active spell."),
+	    'P',
+	    [] {
+		    ControllerActionHeld = GameActionType_CAST_SPELL;
+		    LastMouseButtonAction = MouseActionType::None;
+		    PerformSpellAction();
 	    },
 	    [] {
 		    ControllerActionHeld = GameActionType_NONE;

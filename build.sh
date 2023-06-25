@@ -23,5 +23,5 @@ build_args=(
 )
 
 cmake "${cfg_args[@]}" &&
-time ccache cmake "${build_args[@]}" &&
+time cmake "${build_args[@]}" &&
 ./build/devilutionx --verbose
