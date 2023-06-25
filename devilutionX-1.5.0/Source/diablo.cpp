@@ -686,6 +686,20 @@ bool HandleTextInput(string_view text)
 	LogVerbose("Unhandled SDL event: {} {}", name, value);
 }
 
+bool alwaysUseMouse = true;
+bool useMouse = true;
+void ToggleAlwaysUseMouse() {
+	if (alwaysUseMouse) {
+		alwaysUseMouse = false;
+		useMouse = false;
+		SetPointAndClick(false);
+	} else {
+		alwaysUseMouse = true;
+		useMouse = true;
+		SetPointAndClick(true);
+	}
+}
+
 void GameEventHandler(const SDL_Event &event, uint16_t modState)
 {
 	StaticVector<ControllerButtonEvent, 4> ctrlEvents = ToControllerButtonEvents(event);
@@ -739,20 +753,20 @@ void GameEventHandler(const SDL_Event &event, uint16_t modState)
 		return;
 #endif
 	case SDL_MOUSEMOTION:
-		SetPointAndClick(true);
+		if (alwaysUseMouse || useMouse) SetPointAndClick(true);
 		if (ControlMode == ControlTypes::KeyboardAndMouse && invflag)
 			InvalidateInventorySlot();
 		MousePosition = { event.motion.x, event.motion.y };
 		gmenu_on_mouse_move();
 		return;
 	case SDL_MOUSEBUTTONDOWN:
-		SetPointAndClick(true);
+		if (alwaysUseMouse || useMouse) SetPointAndClick(true);
 		gmenu_on_mouse_move();
 		MousePosition = { event.button.x, event.button.y };
 		HandleMouseButtonDown(event.button.button, modState);
 		return;
 	case SDL_MOUSEBUTTONUP:
-		SetPointAndClick(true);
+		if (alwaysUseMouse || useMouse) SetPointAndClick(true);
 		gmenu_on_mouse_move();
 		MousePosition = { event.button.x, event.button.y };
 		HandleMouseButtonUp(event.button.button, modState);
@@ -1841,6 +1855,7 @@ void InitKeymapActions()
 	    N_("Moves the player character left."),
 	    'H',
 	    [] {
+		    useMouse = false;
 		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_LEFT, AxisDirectionY_NONE }); // left
 	    });
@@ -1851,6 +1866,7 @@ void InitKeymapActions()
 	    N_("Moves the player character right."),
 	    'L',
 	    [] {
+		    useMouse = false;
 		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_NONE }); // right
 	    });
@@ -1861,6 +1877,7 @@ void InitKeymapActions()
 	    N_("Moves the player character up."),
 	    'K',
 	    [] {
+		    useMouse = false;
 		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_NONE, AxisDirectionY_UP }); // up
 	    });
@@ -1871,6 +1888,7 @@ void InitKeymapActions()
 	    N_("Moves the player character down."),
 	    'J',
 	    [] {
+		    useMouse = false;
 		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_NONE, AxisDirectionY_DOWN }); // down
 	    });
@@ -1881,6 +1899,7 @@ void InitKeymapActions()
 	    N_("Moves the player character up + left."),
 	    'Y',
 	    [] {
+		    useMouse = false;
 		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_LEFT, AxisDirectionY_UP }); // up-left
 	    });
@@ -1891,6 +1910,7 @@ void InitKeymapActions()
 	    N_("Moves the player character up + right."),
 	    'U',
 	    [] {
+		    useMouse = false;
 		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_UP }); // up-right
 	    });
@@ -1901,6 +1921,7 @@ void InitKeymapActions()
 	    N_("Moves the player character down + left."),
 	    'B',
 	    [] {
+		    useMouse = false;
 		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_LEFT, AxisDirectionY_DOWN }); // down-left
 	    });
@@ -1911,6 +1932,7 @@ void InitKeymapActions()
 	    N_("Moves the player character down + right."),
 	    'N',
 	    [] {
+		    useMouse = false;
 		SetPointAndClick(false);
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_DOWN }); // down-right
 	    });
@@ -1921,6 +1943,7 @@ void InitKeymapActions()
 	    N_("Attack monsters, talk to towners, lift and place inventory items."),
 	    SDLK_SPACE,
 	    [] {
+		SetPointAndClick(false);
 		    ControllerActionHeld = GameActionType_PRIMARY_ACTION;
 		    LastMouseButtonAction = MouseActionType::None;
 		    PerformPrimaryAction();
@@ -1936,6 +1959,7 @@ void InitKeymapActions()
 	    N_("Open chests, interact with doors, pick up items."),
 	    'G',
 	    [] {
+		SetPointAndClick(false);
 		    ControllerActionHeld = GameActionType_SECONDARY_ACTION;
 		    LastMouseButtonAction = MouseActionType::None;
 		    PerformSecondaryAction();
@@ -1951,6 +1975,7 @@ void InitKeymapActions()
 	    N_("Cast the active spell."),
 	    'P',
 	    [] {
+		SetPointAndClick(false);
 		    ControllerActionHeld = GameActionType_CAST_SPELL;
 		    LastMouseButtonAction = MouseActionType::None;
 		    PerformSpellAction();
@@ -1961,6 +1986,24 @@ void InitKeymapActions()
 	    },
 	    CanPlayerTakeAction);
 
+	sgOptions.Keymapper.AddAction(
+	    "UseMouse",
+	    N_("Use mouse"),
+	    N_("Use the mouse to select targets"),
+	    'A',
+	    [] {
+		    useMouse = true;
+		    SetPointAndClick(true);
+	    });
+
+	sgOptions.Keymapper.AddAction(
+	    "ToggleAlwaysUseMouse",
+	    N_("Toggle always use mouse"),
+	    N_("Toggle always use the mouse to select targets"),
+	    'W',
+	    [] {
+		ToggleAlwaysUseMouse();
+	    });
 
 #ifdef _DEBUG
 	sgOptions.Keymapper.AddAction(
