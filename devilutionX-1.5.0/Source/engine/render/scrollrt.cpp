@@ -215,7 +215,8 @@ void UndrawCursor(const Surface &out)
 bool ShouldShowCursor()
 {
 	if (ControlMode == ControlTypes::KeyboardAndMouse)
-		return true;
+//		return true;
+		return IsPointAndClick();
 	if (pcurs == CURSOR_TELEPORT)
 		return true;
 	if (invflag)
