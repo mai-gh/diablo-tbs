@@ -32,9 +32,13 @@ cd diablo-tbs
 
 Since you have a lot more control over timing in battles, the game becomes less difficult.
 
-I recommend starting new games on Nightmare difficulty and boosting your level to 20.
+I recommend starting new games on Nightmare difficulty.
 
-When starting a new game, press enter, type `givexp 19`, press enter.
+If playing a Sorcerer, it is possible to start at level 1.
+
+If playing a Warrior or a Rogue, I reccomend starting at level 9..
+
+When starting a new game, press enter, type `givexp 8`, press enter.
 
 Now spend the attribute points as you like. 
 
