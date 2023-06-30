@@ -36,7 +36,7 @@ I recommend starting new games on Nightmare difficulty.
 
 If playing a Sorcerer, it is possible to start at level 1.
 
-If playing a Warrior or a Rogue, I reccomend starting at level 9..
+If playing a Warrior or a Rogue, I recommend starting at level 9.
 
 When starting a new game, press enter, type `givexp 8`, press enter.
 

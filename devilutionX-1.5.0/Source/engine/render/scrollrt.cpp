@@ -216,7 +216,7 @@ bool ShouldShowCursor()
 {
 	if (ControlMode == ControlTypes::KeyboardAndMouse)
 //		return true;
-		return IsPointAndClick();
+		return (IsPointAndClick() || IsLeftPanelOpen() || IsRightPanelOpen() || spselflag);
 	if (pcurs == CURSOR_TELEPORT)
 		return true;
 	if (invflag)
