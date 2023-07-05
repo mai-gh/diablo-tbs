@@ -99,6 +99,12 @@
 
 namespace devilution {
 
+bool playerDidAction = false;
+int skipPlayerTurn = 0;
+void setSkipPlayerTurn(int val) {
+	skipPlayerTurn = val;
+}
+
 uint32_t glSeedTbl[NUMLEVELS];
 Point MousePosition;
 bool gbRunGame;
@@ -552,6 +558,9 @@ void PressKey(SDL_Keycode vkey, uint16_t modState)
 			GetDebugMonster();
 		return;
 #endif
+	case SDLK_SEMICOLON:
+		setSkipPlayerTurn(10);
+		return;
 	case SDLK_RETURN:
 	case SDLK_KP_ENTER:
 		if ((modState & KMOD_ALT) != 0) {
@@ -1399,11 +1408,12 @@ void GameLogic()
 	}
 	if (gbProcessPlayers) {
 		gGameLogicStep = GameLogicStep::ProcessPlayers;
-		bool playerDidAction = ProcessPlayers();
+		if (skipPlayerTurn == 0) playerDidAction = ProcessPlayers();
 		if (leveltype != DTYPE_TOWN) {
-			if (playerDidAction) {
+			if (playerDidAction || skipPlayerTurn > 0) {
 				gGameLogicStep = GameLogicStep::ProcessMonsters;
 				ProcessMonsters();
+				if (skipPlayerTurn > 0) setSkipPlayerTurn(skipPlayerTurn - 1);
 			}
 			gGameLogicStep = GameLogicStep::ProcessMissiles;
 			ProcessMissiles();
