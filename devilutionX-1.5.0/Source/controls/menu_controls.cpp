@@ -92,8 +92,10 @@ std::vector<MenuAction> GetMenuActions(const SDL_Event &event)
 		SDL_Keycode sym = event.key.keysym.sym;
 		remap_keyboard_key(&sym);
 		switch (sym) {
+		case SDLK_k:
 		case SDLK_UP:
 			return { MenuAction_UP };
+		case SDLK_j:
 		case SDLK_DOWN:
 			return { MenuAction_DOWN };
 		case SDLK_TAB:
@@ -119,10 +121,13 @@ std::vector<MenuAction> GetMenuActions(const SDL_Event &event)
 			break;
 		case SDLK_DELETE:
 			return { MenuAction_DELETE };
+		case SDLK_h:
 		case SDLK_LEFT:
 			return { MenuAction_LEFT };
+		case SDLK_l:
 		case SDLK_RIGHT:
 			return { MenuAction_RIGHT };
+		case SDLK_SEMICOLON:
 		case SDLK_ESCAPE:
 			return { MenuAction_BACK };
 		default:

@@ -269,6 +269,7 @@ bool gmenu_presskeys(SDL_Keycode vkey)
 	if (sgpCurrentMenu == nullptr)
 		return false;
 	switch (vkey) {
+	case SDLK_SPACE:
 	case SDLK_KP_ENTER:
 	case SDLK_RETURN:
 		if (sgpCurrItem->enabled()) {
@@ -276,21 +277,26 @@ bool gmenu_presskeys(SDL_Keycode vkey)
 			sgpCurrItem->fnMenu(true);
 		}
 		break;
+	case SDLK_SEMICOLON:
 	case SDLK_ESCAPE:
 		PlaySFX(IS_TITLEMOV);
 		gmenu_set_items(nullptr, nullptr);
 		break;
-	case SDLK_SPACE:
-		return false;
+//	case SDLK_SPACE:
+//		return false;
+	case SDLK_h:
 	case SDLK_LEFT:
 		GmenuLeftRight(false);
 		break;
+	case SDLK_l:
 	case SDLK_RIGHT:
 		GmenuLeftRight(true);
 		break;
+	case SDLK_k:
 	case SDLK_UP:
 		GmenuUpDown(false);
 		break;
+	case SDLK_j:
 	case SDLK_DOWN:
 		GmenuUpDown(true);
 		break;
