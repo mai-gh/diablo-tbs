@@ -99,6 +99,7 @@
 
 namespace devilution {
 
+bool tmpUseMouse = false;
 bool playerDidAction = false;
 int skipPlayerTurn = 0;
 void setSkipPlayerTurn(int val) {
@@ -559,7 +560,24 @@ void PressKey(SDL_Keycode vkey, uint16_t modState)
 		return;
 #endif
 	case SDLK_SEMICOLON:
-		setSkipPlayerTurn(10);
+		PressEscKey();
+		if (leveltype != DTYPE_TOWN) {
+			setSkipPlayerTurn(10);
+		}
+		return;
+	case SDLK_SPACE:
+		if (stextflag != TalkID::None) {
+			StoreEnter();
+		} else if (QuestLogIsOpen) {
+			QuestlogEnter();
+		} else {
+			SetPointAndClick(false);
+			ControllerActionHeld = GameActionType_PRIMARY_ACTION;
+			LastMouseButtonAction = MouseActionType::None;
+			PerformPrimaryAction();
+			ControllerActionHeld = GameActionType_NONE;
+			LastMouseButtonAction = MouseActionType::None;
+		}
 		return;
 	case SDLK_RETURN:
 	case SDLK_KP_ENTER:
@@ -572,6 +590,21 @@ void PressKey(SDL_Keycode vkey, uint16_t modState)
 			QuestlogEnter();
 		} else {
 			control_type_message();
+		}
+		return;
+	case SDLK_k:
+		if (stextflag != TalkID::None) {
+			StoreUp();
+		} else if (QuestLogIsOpen) {
+			QuestlogUp();
+		} else if (HelpFlag) {
+			HelpScrollUp();
+		} else if (ChatLogFlag) {
+			ChatLogScrollUp();
+		} else {
+			tmpUseMouse = false;
+			SetPointAndClick(false);
+			WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_NONE, AxisDirectionY_UP }); // up
 		}
 		return;
 	case SDLK_UP:
@@ -587,6 +620,21 @@ void PressKey(SDL_Keycode vkey, uint16_t modState)
 			AutomapUp();
 		} else if (IsStashOpen) {
 			Stash.PreviousPage();
+		}
+		return;
+	case SDLK_j:
+		if (stextflag != TalkID::None) {
+			StoreDown();
+		} else if (QuestLogIsOpen) {
+			QuestlogDown();
+		} else if (HelpFlag) {
+			HelpScrollDown();
+		} else if (ChatLogFlag) {
+			ChatLogScrollDown();
+		} else {
+			tmpUseMouse = false;
+			SetPointAndClick(false);
+		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_NONE, AxisDirectionY_DOWN }); // down
 		}
 		return;
 	case SDLK_DOWN:
@@ -617,6 +665,16 @@ void PressKey(SDL_Keycode vkey, uint16_t modState)
 		} else if (ChatLogFlag) {
 			ChatLogScrollBottom();
 		}
+		return;
+	case SDLK_h:
+		tmpUseMouse = false;
+		SetPointAndClick(false);
+		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_LEFT, AxisDirectionY_NONE });
+		return;
+	case SDLK_l:
+		tmpUseMouse = false;
+		SetPointAndClick(false);
+		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_NONE });
 		return;
 	case SDLK_LEFT:
 		if (AutomapActive && !talkflag)
@@ -695,7 +753,6 @@ bool HandleTextInput(string_view text)
 	LogVerbose("Unhandled SDL event: {} {}", name, value);
 }
 
-bool tmpUseMouse = false;
 
 void HandleMouseToggle() {
 	if ((SDL_GetModState() & KMOD_SHIFT) != 0) { // shift is pressed
@@ -1671,10 +1728,16 @@ void InitKeymapActions()
 	    CanPlayerTakeAction);
 	sgOptions.Keymapper.AddAction(
 	    "DisplaySpells",
-	    N_("Speedbook"),
-	    N_("Open Speedbook."),
+	    N_("Speedbook/SpellBook"),
+	    N_("Open Speedbook (use Shift for SpellBook)."),
 	    'S',
-	    DisplaySpellsKeyPressed,
+	    [] {
+		if ((SDL_GetModState() & KMOD_SHIFT) != 0) { // shift is pressed
+			SpellBookKeyPressed();
+		} else {
+			DisplaySpellsKeyPressed();
+		}
+	    },
 	    nullptr,
 	    CanPlayerTakeAction);
 	sgOptions.Keymapper.AddAction(
@@ -1756,15 +1819,15 @@ void InitKeymapActions()
 	    QuestLogKeyPressed,
 	    nullptr,
 	    CanPlayerTakeAction);
-	sgOptions.Keymapper.AddAction(
-	    "SpellBook",
-	    N_("Spellbook"),
-	    N_("Open Spellbook."),
-//	    'B',
-            SDLK_UNKNOWN,
-	    SpellBookKeyPressed,
-	    nullptr,
-	    CanPlayerTakeAction);
+//	sgOptions.Keymapper.AddAction(
+//	    "SpellBook",
+//	    N_("Spellbook"),
+//	    N_("Open Spellbook."),
+////	    'B',
+//            SDLK_UNKNOWN,
+//	    SpellBookKeyPressed,
+//	    nullptr,
+//	    CanPlayerTakeAction);
 	for (int i = 0; i < 4; ++i) {
 		sgOptions.Keymapper.AddAction(
 		    "QuickMessage{}",
@@ -1780,7 +1843,7 @@ void InitKeymapActions()
 	    "Hide Info Screens",
 	    N_("Hide Info Screens"),
 	    N_("Hide all info screens."),
-	    SDLK_SPACE,
+	    SDLK_UNKNOWN,
 	    [] {
 		    ClosePanels();
 		    HelpFlag = false;
@@ -1870,49 +1933,49 @@ void InitKeymapActions()
 	    });
 
 
-	sgOptions.Keymapper.AddAction(
-	    "MoveLeft",
-	    N_("Move left"),
-	    N_("Moves the player character left."),
-	    'H',
-	    [] {
-		    tmpUseMouse = false;
-		SetPointAndClick(false);
-		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_LEFT, AxisDirectionY_NONE }); // left
-	    });
+//	sgOptions.Keymapper.AddAction(
+//	    "MoveLeft",
+//	    N_("Move left"),
+//	    N_("Moves the player character left."),
+//	    'H',
+//	    [] {
+//		    tmpUseMouse = false;
+//		SetPointAndClick(false);
+//		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_LEFT, AxisDirectionY_NONE }); // left
+//	    });
 
-	sgOptions.Keymapper.AddAction(
-	    "MoveRight",
-	    N_("Move right"),
-	    N_("Moves the player character right."),
-	    'L',
-	    [] {
-		    tmpUseMouse = false;
-		SetPointAndClick(false);
-		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_NONE }); // right
-	    });
+//	sgOptions.Keymapper.AddAction(
+//	    "MoveRight",
+//	    N_("Move right"),
+//	    N_("Moves the player character right."),
+//	    'L',
+//	    [] {
+//		    tmpUseMouse = false;
+//		SetPointAndClick(false);
+//		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_NONE }); // right
+//	    });
 
-	sgOptions.Keymapper.AddAction(
-	    "MoveUp",
-	    N_("Move up"),
-	    N_("Moves the player character up."),
-	    'K',
-	    [] {
-		    tmpUseMouse = false;
-		SetPointAndClick(false);
-		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_NONE, AxisDirectionY_UP }); // up
-	    });
+//	sgOptions.Keymapper.AddAction(
+//	    "MoveUp",
+//	    N_("Move up"),
+//	    N_("Moves the player character up."),
+//	    'K',
+//	    [] {
+//		    tmpUseMouse = false;
+//		SetPointAndClick(false);
+//		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_NONE, AxisDirectionY_UP }); // up
+//	    });
 
-	sgOptions.Keymapper.AddAction(
-	    "MoveDown",
-	    N_("Move down"),
-	    N_("Moves the player character down."),
-	    'J',
-	    [] {
-		    tmpUseMouse = false;
-		SetPointAndClick(false);
-		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_NONE, AxisDirectionY_DOWN }); // down
-	    });
+//	sgOptions.Keymapper.AddAction(
+//	    "MoveDown",
+//	    N_("Move down"),
+//	    N_("Moves the player character down."),
+//	    'J',
+//	    [] {
+//		    tmpUseMouse = false;
+//		SetPointAndClick(false);
+//		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_NONE, AxisDirectionY_DOWN }); // down
+//	    });
 
 	sgOptions.Keymapper.AddAction(
 	    "MoveUpLeft",
@@ -1958,22 +2021,22 @@ void InitKeymapActions()
 		WalkInDir(MyPlayerId, AxisDirection { AxisDirectionX_RIGHT, AxisDirectionY_DOWN }); // down-right
 	    });
 
-	sgOptions.Keymapper.AddAction(
-	    "PrimaryAction",
-	    N_("Primary action"),
-	    N_("Attack monsters, talk to towners, lift and place inventory items."),
-	    SDLK_SPACE,
-	    [] {
-		SetPointAndClick(false);
-		    ControllerActionHeld = GameActionType_PRIMARY_ACTION;
-		    LastMouseButtonAction = MouseActionType::None;
-		    PerformPrimaryAction();
-	    },
-	    [] {
-		    ControllerActionHeld = GameActionType_NONE;
-		    LastMouseButtonAction = MouseActionType::None;
-	    },
-	    CanPlayerTakeAction);
+//	sgOptions.Keymapper.AddAction(
+//	    "PrimaryAction",
+//	    N_("Primary action"),
+//	    N_("Attack monsters, talk to towners, lift and place inventory items."),
+//	    SDLK_SPACE,
+//	    [] {
+//		SetPointAndClick(false);
+//		    ControllerActionHeld = GameActionType_PRIMARY_ACTION;
+//		    LastMouseButtonAction = MouseActionType::None;
+//		    PerformPrimaryAction();
+//	    },
+//	    [] {
+//		    ControllerActionHeld = GameActionType_NONE;
+//		    LastMouseButtonAction = MouseActionType::None;
+//	    },
+//	    CanPlayerTakeAction);
 	sgOptions.Keymapper.AddAction(
 	    "SecondaryAction",
 	    N_("Secondary action"),
